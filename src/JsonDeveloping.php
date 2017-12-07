@@ -9,8 +9,8 @@ class JsonDeveloping extends Developing implements \JsonSerializable
         return array(
             'zones'      => $this->getZones(),
             'densities'  => $this->getDensities(),
-            'N'          => $this->getN(),
-            'offset'     => $this->getOffset(),
+            'N'          => $this->getNDeviation(),
+            'offset'     => $this->getSpeedOffset(),
             'developing' => $this->getDevelopingType()
         );
     }
