@@ -11,7 +11,9 @@ class JsonDeveloping extends Developing implements \JsonSerializable
             'densities'  => $this->getDensities(),
             'N'          => $this->getNDeviation(),
             'offset'     => $this->getSpeedOffset(),
-            'developing' => $this->getDevelopingType()
+            'developing' => $this->getDevelopingType(),
+            'gamma'      => $this->getGammaContrast(),
+            'beta'       => $this->getBetaContrast()
         );
     }
 
