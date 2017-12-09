@@ -17,6 +17,16 @@ interface DevelopingInterface extends ZonesAwareInterface, DensitiesAwareInterfa
     public function getSpeedOffset();
 
     /**
+     * @return float|null
+     */
+    public function getGammaContrast();
+
+    /**
+     * @return float|null
+     */
+    public function getBetaContrast();
+
+    /**
      * @return string
      */
     public function getDevelopingType();
