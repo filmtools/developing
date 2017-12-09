@@ -26,6 +26,16 @@ abstract class DevelopingAbstract implements DevelopingInterface
      */
     public $speed_offset = null;
 
+    /**
+     * @var float
+     */
+    public $gamma = null;
+
+    /**
+     * @var float
+     */
+    public $beta = null;
+
 
 
     /**
@@ -46,6 +56,25 @@ abstract class DevelopingAbstract implements DevelopingInterface
         return $this->speed_offset;
     }
 
+
+    /**
+     * @inherit
+     * @implements DevelopingInterface
+     */
+    public function getGammaContrast()
+    {
+        return $this->gamma;
+    }
+
+
+    /**
+     * @inherit
+     * @implements DevelopingInterface
+     */
+    public function getBetaContrast()
+    {
+        return $this->beta;
+    }
 
 
     /**
