@@ -15,7 +15,8 @@
   },
 
   "require": {
-		"filmtools/exposureseries": "^1.0"
+		"filmtools/exposureseries": "^1.0",
+    "filmtools/films": "^1.0"
 	},
 
   "require-dev": {

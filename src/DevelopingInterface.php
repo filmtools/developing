@@ -3,8 +3,9 @@ namespace FilmTools\Developing;
 
 use FilmTools\ExposureSeries\ZonesAwareInterface;
 use FilmTools\ExposureSeries\DensitiesAwareInterface;
+use FilmTools\Films\FilmAwareInterface;
 
-interface DevelopingInterface extends ZonesAwareInterface, DensitiesAwareInterface
+interface DevelopingInterface extends ZonesAwareInterface, DensitiesAwareInterface, FilmAwareInterface
 {
     /**
      * @return float|null

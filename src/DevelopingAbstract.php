@@ -3,13 +3,15 @@ namespace FilmTools\Developing;
 
 use FilmTools\ExposureSeries\ZonesAwareTrait;
 use FilmTools\ExposureSeries\DensitiesAwareTrait;
+use FilmTools\Films\FilmAwareTrait;
 
 
 abstract class DevelopingAbstract implements DevelopingInterface
 {
 
     use ZonesAwareTrait,
-        DensitiesAwareTrait;
+        DensitiesAwareTrait,
+        FilmAwareTrait;
 
     /**
      * @var integer
