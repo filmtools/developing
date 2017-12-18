@@ -3,15 +3,16 @@ build:
 
     dependencies:
         before:
+            - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo 'xdebug.enable = On' >> /etc/hhvm/php.ini; fi
             - rm composer.lock
 
-    # tests:
-    #     override:
-    #         -
-    #             command: 'vendor/bin/phpunit --coverage-clover=coverage'
-    #             coverage:
-    #                 file: 'coverage'
-    #                 format: 'php-clover'
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=coverage'
+                coverage:
+                    file: 'coverage'
+                    format: 'php-clover'
 
     nodes:
         # Common versions: 5.4, 5.5, 5.6, 7.1 or hhvm
