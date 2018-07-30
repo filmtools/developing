@@ -23,7 +23,8 @@
 
   "require": {
     "php": "^7.0",
-		"filmtools/commons": "^1.0"
+		"filmtools/commons": "^1.0",
+    "psr/container": "^1.0"
 	},
 
   "require-dev": {
