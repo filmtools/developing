@@ -3,24 +3,38 @@
   "description": "PHP classes for film developings",
   "license": "CC BY-SA 3.0",
 
+  "authors": [
+    {
+      "name":  "Carsten Witt",
+      "role":  "Author"
+    }
+  ],
+
 	"autoload": {
 		"psr-4": {
 			"FilmTools\\Developing\\": "src/"
 		}
 	},
+
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "tests\\": "tests/src"
     }
   },
 
   "require": {
-		"filmtools/exposureseries": "^1.0",
-    "filmtools/films": "^1.0"
+    "php": "^7.0",
+		"filmtools/commons": "^1.0",
+    "psr/container": "^1.0"
 	},
 
   "require-dev": {
-    "phpunit/phpunit": "^5.7"
+    "php-coveralls/php-coveralls": "^2.0",
+    "phpunit/phpunit": "^6.0"
+  },
+
+  "scripts": {
+    "test": "phpunit"
   }
 
 }

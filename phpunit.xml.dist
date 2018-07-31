@@ -1,23 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <phpunit colors="true"
-		stopOnFailure="true"
-		syntaxCheck="true"
-		bootstrap="vendor/autoload.php"
-		beStrictAboutCoversAnnotation="true"
-		verbose="true">
+		 stopOnFailure="true"
+		 stopOnError="true"
+		 bootstrap="tests/bootstrap.php">
 
-    <testsuites>
-        <testsuite name="Test Suite">
-            <directory>tests</directory>
-        </testsuite>
-    </testsuites>
-
+	<testsuites>
+		<testsuite name="Test Suite">
+			<directory>tests/src</directory>
+		</testsuite>
+	</testsuites>
 
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory>src</directory>
 		</whitelist>
 	</filter>
-
 
 	<logging>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>

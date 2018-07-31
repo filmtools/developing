@@ -1,40 +1,25 @@
 <?php
 namespace FilmTools\Developing;
 
-use FilmTools\ExposureSeries\ZonesAwareInterface;
-use FilmTools\ExposureSeries\DensitiesAwareInterface;
-use FilmTools\Films\FilmAwareInterface;
+use FilmTools\Commons\DensitiesProviderInterface;
+use FilmTools\Commons\ExposuresProviderInterface;
+use Psr\Container\ContainerInterface;
 
-interface DevelopingInterface extends ZonesAwareInterface, DensitiesAwareInterface, FilmAwareInterface
+interface DevelopingInterface extends DensitiesProviderInterface, ExposuresProviderInterface, ContainerInterface, \Countable, \IteratorAggregate
 {
-    /**
-     * @return float|null
-     */
-    public function getNDeviation();
 
     /**
-     * @return float|null
-     */
-    public function getSpeedOffset();
-
-    /**
-     * @return float|null
-     */
-    public function getGammaContrast();
-
-    /**
-     * @return float|null
-     */
-    public function getBetaContrast();
-
-    /**
-     * @return string
-     */
-    public function getDevelopingType();
-
-    /**
+     * Returns the developing time.
+     *
      * @return int
      */
-    public function getTime();
+    public function getTime() : int;
 
+
+    /**
+     * Returns an array with exposure and density values.
+     *
+     * @return array
+     */
+    public function getData() : array;
 }

@@ -1,66 +1,186 @@
 <?php
 namespace FilmTools\Developing;
 
+use FilmTools\Commons\DataLengthMismatchException;
+use FilmTools\Commons\FilmToolsInvalidArgumentException;
+use FilmTools\Commons\Exposures;
+use FilmTools\Commons\ExposuresInterface;
+use FilmTools\Commons\ExposuresProviderInterface;
+use FilmTools\Commons\Densities;
+use FilmTools\Commons\DensitiesInterface;
+use FilmTools\Commons\DensitiesProviderInterface;
 
-class Developing extends DevelopingAbstract implements DevelopingInterface
+class Developing implements DevelopingInterface
 {
 
     /**
-     * @var Callable
+     * @var int
      */
-    public $n_calculator;
+    public $time;
 
     /**
-     * @var Callable
+     * @var Exposures
      */
-    public $speed_calculator;
+    protected $exposures;
 
+    /**
+     * @var Densities
+     */
+    protected $densities;
+
+    /**
+     * @var array
+     */
+    protected $data;
 
 
     /**
-     * @param float[]|Traversable $zones
-     * @param float[]|Traversable $densities
-     * @param callable            $n_calculator      Callable accepting zones and densities array
-     * @param callable            $speed_calculator  Callable accepting zones and densities array
+     * @param ExposuresProviderInterface|float[] $exposures
+     * @param DensitiesProviderInterface|float[] $densities
+     * @param int     $time
      */
-    public function __construct( $zones, $densities, callable $n_calculator, callable $speed_calculator )
+    public function __construct( $exposures, $densities, int $time)
     {
-        $this->setZones( $zones );
+        $this->setExposures( $exposures );
         $this->setDensities( $densities );
-        $this->n_calculator     = $n_calculator;
-        $this->speed_calculator = $speed_calculator;
+
+        if (count($this->getExposures()) != count( $this->getDensities() ))
+            throw new DataLengthMismatchException;
+
+        $this->resetData();
+
+        $this->time = $time;
+    }
+
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getTime(): int
+    {
+        return $this->time;
     }
 
 
     /**
-     * @inherit
-     * @implements DevelopingInterface
+     * @inheritDoc
      */
-    public function getNDeviation()
+    public function count()
     {
-        if (is_null($this->n_deviation)):
-            $n_calculator = $this->n_calculator;
-            $this->n_deviation = $n_calculator( $this->getZones(), $this->getDensities() );
-        endif;
-
-        return $this->n_deviation;
+        return $this->getExposures()->count();
     }
+
+
 
     /**
-     * @inherit
-     * @implements DevelopingInterface
+     * @inheritDoc
      */
-    public function getSpeedOffset()
+    public function getIterator()
     {
-        if (is_null($this->speed_offset)):
-            $speed_calculator = $this->speed_calculator;
-            $this->speed_offset = $speed_calculator( $this->getZones(), $this->getDensities() );
-        endif;
-
-        return $this->speed_offset;
+        $data = $this->getData();
+        return new \ArrayIterator( $data );
     }
 
 
+    /**
+     * @inheritDoc
+     * @return Exposures
+     */
+    public function getExposures(): ExposuresInterface {
+        return $this->exposures;
+    }
 
 
+    /**
+     * @param  ExposuresProviderInterface|float[] $exposures [description]
+     * @return $this Fluent interface
+     */
+    protected function setExposures( $exposures )
+    {
+        if (is_array($exposures))
+            $exposures = new Exposures($exposures);
+
+        if (!$exposures instanceOf ExposuresProviderInterface)
+            throw new FilmToolsInvalidArgumentException("Array or ExposuresProviderInterface expected");
+
+        $this->exposures = $exposures->getExposures();
+        return $this;
+    }
+
+
+    /**
+     * @inheritDoc
+     * @return Densities
+     */
+    public function getDensities(): DensitiesInterface {
+        return $this->densities;
+    }
+
+
+    /**
+     * @param  DensitiesProviderInterface|float[] $exposures [description]
+     * @return $this Fluent interface
+     */
+    protected function setDensities( $densities )
+    {
+        if (is_array($densities))
+            $densities = new Densities($densities);
+
+        if (!$densities instanceOf DensitiesProviderInterface)
+            throw new FilmToolsInvalidArgumentException("Array or DensitiesProviderInterface expected");
+
+        $this->densities = $densities->getDensities();
+        return $this;
+    }
+
+
+    /**
+     * Checks if a given logH exposure exists in this developing run.
+     *
+     * @inheritDoc
+     */
+    public function has( $logH )
+    {
+        return ($this->getExposures()->search($logH) !== false);
+    }
+
+
+    /**
+     * Returns the density value for a given logH exposure.
+     *
+     * @inheritDoc
+     * @return float
+     */
+    public function get( $logH ): float
+    {
+        $index = $this->getExposures()->search( $logH );
+
+        if ($index === false ):
+            $msg = sprintf("No data for logH exposure '%s'", $logH);
+            throw new ExposureNotFoundException( $msg );
+        endif;
+
+        return $this->getDensities()->offsetGet( $index );
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getData() : array
+    {
+        return $this->data;
+    }
+
+
+    protected function resetData()
+    {
+        $this->data = array_combine(
+            $this->getExposures()->getArrayCopy(),
+            $this->getDensities()->getArrayCopy()
+        );
+    }
 }

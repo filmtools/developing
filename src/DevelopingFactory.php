@@ -1,43 +1,56 @@
 <?php
 namespace FilmTools\Developing;
 
+use FilmTools\Commons\Zones;
 
 class DevelopingFactory
 {
 
     /**
-     * @var Callable
+     * PHP class name (FQDN) of the DevelopingInterface instance this factory produces.
+     *
+     * @var string
      */
-    public $n_calculator;
-
-    /**
-     * @var Callable
-     */
-    public $speed_calculator;
+    public $developing_php_class;
 
 
     /**
-     * @param callable $n_calculator      Callable accepting zones and densities array
-     * @param callable $speed_calculator  Callable accepting zones and densities array
+     * @param string|null $developing_php_class DevelopingInterface instance FQDN
+     *
+     * @throws InvalidArgumentException         If FQDN does not implement DevelopingInterface
      */
-    public function __construct( callable $n_calculator, callable $speed_calculator )
+    public function __construct( string $developing_php_class = null )
     {
-        $this->n_calculator = $n_calculator;
-        $this->speed_calculator = $speed_calculator;
+        $this->developing_php_class = $developing_php_class ?: Developing::class;
+
+        if (!is_subclass_of($this->developing_php_class, DevelopingInterface::class ))
+            throw new \InvalidArgumentException("Class name must implement DevelopingInterface.");
     }
 
 
     /**
-     * @param  int                 $time
-     * @param  float[]|Traversable $zones      Optional
-     * @param  float[]|Traversable $densities  Optional
+     * The factory method.
      *
-     * @return Developing
+     * Expects an array with at least elements "time", "densities", and "exposures".
+     *
+     * If no "exposures" are given, but "zones" numbers are instead, the zone numbers
+     * will be converted internally.
+     *
+     * @param  array $developing
+     * @return DevelopingInterface
      */
-    public function __invoke( $time, $zones = array(), $densities = array() )
+    public function __invoke( $developing )
     {
-        $developing = new Developing( $zones, $densities, $this->n_calculator, $this->speed_calculator );
-        $developing->setTime( $time );
-        return $developing;
+        $time      = $developing['time']      ?? null;
+        $densities = $developing['densities'] ?? array();
+        $zones     = $developing['zones']     ?? array();
+        $exposures = $developing['exposures'] ?? array();
+
+        if (empty($exposures) and !empty($zones)):
+            $exposures = new Zones( $zones );
+        endif;
+
+        $developing_php_class = $this->developing_php_class;
+        return new $developing_php_class( $exposures, $densities, $time );
     }
 }
