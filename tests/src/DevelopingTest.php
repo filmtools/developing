@@ -27,6 +27,7 @@ class DevelopingTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals( $time, $sut->getTime() );
         $this->assertInstanceOf( ExposuresInterface::class, $sut->getExposures() );
         $this->assertInstanceOf( DensitiesInterface::class, $sut->getDensities() );
+
     }
 
 
@@ -71,7 +72,7 @@ class DevelopingTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Developing( $exposures_provider_mock, $densities_provider_mock, 99 );
 
-        $this->assertEquals( count($data), count($sut));
+
         $this->assertEquals( $data, $sut->getData());
         $this->assertEquals( array_values($data), $sut->getDensities()->getArrayCopy());
         $this->assertEquals( array_keys($data), $sut->getExposures()->getArrayCopy());

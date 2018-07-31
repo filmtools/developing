@@ -25,7 +25,7 @@ abstract class DevelopingDecoratorAbstract implements DevelopingInterface
     /**
      * @inheritDoc
      */
-    public function getTime()
+    public function getTime() : int
     {
         return $this->developing->getTime();
     }
@@ -34,7 +34,7 @@ abstract class DevelopingDecoratorAbstract implements DevelopingInterface
     /**
      * @inheritDoc
      */
-    public function getData()
+    public function getData() : array
     {
         return $this->developing->getData();
     }
