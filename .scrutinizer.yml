@@ -6,41 +6,31 @@ build:
         before:
             - rm composer.lock
 
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=coverage'
+                coverage:
+                    file: 'coverage'
+                    format: 'php-clover'
+
     nodes:
+
         php70:
             environment:
                 php: 7.0
-            tests:
-                override:
-                    -
-                        command: 'vendor/bin/phpunit --coverage-clover=coverage'
-                        coverage:
-                            file: 'coverage'
-                            format: 'php-clover'
 
         php71:
             environment:
                 php: 7.1
 
-            tests:
-                override:
-                    -
-                        command: 'vendor/bin/phpunit --coverage-clover=coverage'
-                        coverage:
-                            file: 'coverage'
-                            format: 'php-clover'
-
         php72:
             environment:
                 php: 7.2
 
-            tests:
-                override:
-                    -
-                        command: 'vendor/bin/phpunit --coverage-clover=coverage'
-                        coverage:
-                            file: 'coverage'
-                            format: 'php-clover'
+        php73:
+            environment:
+                php: 7.3
 
 
 checks:
@@ -51,3 +41,4 @@ checks:
 filter:
     excluded_paths:
         - tests/*
+
