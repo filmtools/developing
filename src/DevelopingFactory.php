@@ -2,6 +2,7 @@
 namespace FilmTools\Developing;
 
 use FilmTools\Commons\Zones;
+use FilmTools\Commons\FStops;
 
 class DevelopingFactory
 {
@@ -44,6 +45,7 @@ class DevelopingFactory
     public function __invoke( $developing )
     {
         $densities = $developing['densities'] ?? array();
+        $fstops    = $developing['fstops']     ?? array();
         $zones     = $developing['zones']     ?? array();
         $exposures = $developing['exposures'] ?? array();
 
@@ -58,6 +60,10 @@ class DevelopingFactory
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
+        endif;
+
+        if (empty($exposures) and !empty($fstops)):
+            $exposures = new FStops( $fstops );
         endif;
 
         $developing_php_class = $this->developing_php_class;
