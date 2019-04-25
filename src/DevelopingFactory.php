@@ -54,7 +54,7 @@ class DevelopingFactory
         if (filter_var($time, \FILTER_VALIDATE_INT, [
             'options' => array( 'min_range' => 0 )
         ]) === false)
-            throw new NoTimeGivenException("The developing time must be integer.");
+            throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
