@@ -20,6 +20,8 @@ interface DevelopingInterface extends DensitiesProviderInterface, ExposuresProvi
      * Returns an array with exposure and density values.
      *
      * @return array
+     *
+     * @deprecated
      */
     public function getData() : array;
 }
