@@ -17,14 +17,16 @@ class DevelopingFactory
     /**
      * @param string|null $developing_php_class DevelopingInterface instance FQDN
      *
-     * @throws InvalidArgumentException         If FQDN does not implement DevelopingInterface
+     * @throws InvalidArgumentException If FQDN does not implement DevelopingInterface
      */
     public function __construct( string $developing_php_class = null )
     {
         $this->developing_php_class = $developing_php_class ?: Developing::class;
 
-        if (!is_subclass_of($this->developing_php_class, DevelopingInterface::class ))
-            throw new \InvalidArgumentException("Class name must implement DevelopingInterface.");
+        if (!is_subclass_of($this->developing_php_class, DevelopingInterface::class )):
+            $msg = sprintf("Class name must implement '%s'.", DevelopingInterface::class);
+            throw new DevelopingInvalidArgumentException( $msg );
+        endif;
     }
 
 
@@ -41,10 +43,16 @@ class DevelopingFactory
      */
     public function __invoke( $developing )
     {
-        $time      = $developing['time']      ?? null;
         $densities = $developing['densities'] ?? array();
         $zones     = $developing['zones']     ?? array();
         $exposures = $developing['exposures'] ?? array();
+
+        if (!array_key_exists("time", $developing))
+            throw new NoTimeGivenException("The data array must contain a 'time' element.");
+
+        $time = $developing['time'] ?? false;
+        if (empty($time))
+            throw new NoTimeGivenException("The developing time must not be empty.");
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
