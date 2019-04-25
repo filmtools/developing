@@ -74,7 +74,7 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testInvalidFactoryArguments( $data )
     {
-        $sut = new DevelopingFactory(  );
+        $sut = new DevelopingFactory;
         $this->expectException( DevelopingExceptionInterface::class );
         $this->expectException( NoTimeGivenException::class );
         $sut( $data );

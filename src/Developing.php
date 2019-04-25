@@ -178,8 +178,10 @@ class Developing implements DevelopingInterface
 
     protected function resetData()
     {
+        $exposures = array_map(function($e) { return "" . $e; }, $this->getExposures()->getArrayCopy());
+
         $this->data = array_combine(
-            $this->getExposures()->getArrayCopy(),
+            $exposures,
             $this->getDensities()->getArrayCopy()
         );
     }

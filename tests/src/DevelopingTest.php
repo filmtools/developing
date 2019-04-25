@@ -60,7 +60,7 @@ class DevelopingTest extends \PHPUnit\Framework\TestCase
 
     public function testDataIntegrity()
     {
-        $data = array( 0.1 => 1, 0.2 => 2, 0.3 => 3, 0.4 => 4);
+        $data = array( "0.1" => 1, "0.2" => 2, "0.3" => 3, "0.4" => 4);
 
         $exposures_provider = $this->prophesize( ExposuresProviderInterface::class );
         $exposures_provider->getExposures()->willReturn( new Exposures( array_keys($data) ) );
@@ -72,11 +72,8 @@ class DevelopingTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Developing( $exposures_provider_mock, $densities_provider_mock, 99 );
 
-
+        $this->assertEquals( count($data), count($sut->getData()));
         $this->assertEquals( $data, $sut->getData());
-        $this->assertEquals( array_values($data), $sut->getDensities()->getArrayCopy());
-        $this->assertEquals( array_keys($data), $sut->getExposures()->getArrayCopy());
-
     }
 
 
