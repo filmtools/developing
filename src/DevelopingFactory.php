@@ -51,8 +51,10 @@ class DevelopingFactory
             throw new NoTimeGivenException("The data array must contain a 'time' element.");
 
         $time = $developing['time'] ?? false;
-        if (empty($time))
-            throw new NoTimeGivenException("The developing time must not be empty.");
+        if (filter_var($time, \FILTER_VALIDATE_INT, [
+            'options' => array( 'min_range' => 0 )
+        ]) === false)
+            throw new NoTimeGivenException("The developing time must be integer.");
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
