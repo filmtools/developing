@@ -45,6 +45,11 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
                 'time' => 99,
                 'densities' => array( 1, 2, 3),
                 'zones' => array( 1, 2, 3),
+            ]],
+            [[
+                'time' => 0,
+                'densities' => array( 1, 2, 3),
+                'zones' => array( 1, 2, 3),
             ]]
         );
     }
@@ -85,7 +90,17 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
                 'zones' => array( 1, 2, 3),
             ]],
             [[
-                'time' => 0,
+                'time' => null,
+                'densities' => array( 1, 2, 3),
+                'zones' => array( 1, 2, 3),
+            ]],
+            [[
+                'time' => false,
+                'densities' => array( 1, 2, 3),
+                'zones' => array( 1, 2, 3),
+            ]],
+            [[
+                'time' => -100,
                 'densities' => array( 1, 2, 3),
                 'zones' => array( 1, 2, 3),
             ]]
