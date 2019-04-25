@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "filmtools/commons",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filmtools/commons.git",
-                "reference": "1f3823ef7fef5783f6123a8f100c24421eef7be1"
+                "reference": "5397572e1d2adf31e27d10df0a1d4c88b3f0a1df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filmtools/commons/zipball/1f3823ef7fef5783f6123a8f100c24421eef7be1",
-                "reference": "1f3823ef7fef5783f6123a8f100c24421eef7be1",
+                "url": "https://api.github.com/repos/filmtools/commons/zipball/5397572e1d2adf31e27d10df0a1d4c88b3f0a1df",
+                "reference": "5397572e1d2adf31e27d10df0a1d4c88b3f0a1df",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "Interfaces, classes and factories for photographic densities, exposure values, and zone numbers",
-            "time": "2019-04-25T11:54:54+00:00"
+            "time": "2019-04-25T12:00:30+00:00"
         },
         {
             "name": "psr/container",
