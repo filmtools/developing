@@ -144,7 +144,8 @@ class Developing implements DevelopingInterface
      */
     public function has( $logH )
     {
-        return ($this->getExposures()->search($logH) !== false);
+        $result = $this->getExposures()->search($logH);
+        return !is_null($result) and ($result !== false);
     }
 
 
@@ -156,13 +157,11 @@ class Developing implements DevelopingInterface
      */
     public function get( $logH ): float
     {
-        $index = $this->getExposures()->search( $logH );
-
-        if ($index === false ):
+        if (!$this->has($logH)):
             $msg = sprintf("No data for logH exposure '%s'", $logH);
             throw new ExposureNotFoundException( $msg );
         endif;
-
+        $index = $this->getExposures()->search( $logH );
         return $this->getDensities()->offsetGet( $index );
     }
 

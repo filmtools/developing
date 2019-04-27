@@ -4,24 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "582a871d0ac0f4388c2f42fb703b2cf8",
+    "content-hash": "2a19e17519c24c4b16cb4a12858d4dfd",
     "packages": [
         {
             "name": "filmtools/commons",
-            "version": "1.1.1",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filmtools/commons.git",
-                "reference": "5397572e1d2adf31e27d10df0a1d4c88b3f0a1df"
+                "reference": "881c2b37b22d7358b82450c6f1f271a5fa1e3fb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filmtools/commons/zipball/5397572e1d2adf31e27d10df0a1d4c88b3f0a1df",
-                "reference": "5397572e1d2adf31e27d10df0a1d4c88b3f0a1df",
+                "url": "https://api.github.com/repos/filmtools/commons/zipball/881c2b37b22d7358b82450c6f1f271a5fa1e3fb9",
+                "reference": "881c2b37b22d7358b82450c6f1f271a5fa1e3fb9",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "filmtools/mround": "^1.1",
+                "php": "^7.1"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
@@ -45,7 +46,61 @@
                 }
             ],
             "description": "Interfaces, classes and factories for photographic densities, exposure values, and zone numbers",
-            "time": "2019-04-25T12:00:30+00:00"
+            "time": "2019-04-27T06:49:18+00:00"
+        },
+        {
+            "name": "filmtools/mround",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filmtools/mround.git",
+                "reference": "153ef8a64b29d7fac9ca78591aa1e6e2b1db326b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filmtools/mround/zipball/153ef8a64b29d7fac9ca78591aa1e6e2b1db326b",
+                "reference": "153ef8a64b29d7fac9ca78591aa1e6e2b1db326b",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^5.7|^6.0|^7.0",
+                "spatie/phpunit-watcher": "^1.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FilmTools\\MRounder\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Carsten Witt",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Rounds a number to the nearest multiple of another number (mround, ceiling, floor)",
+            "keywords": [
+                "LibreOffice",
+                "OpenOffice",
+                "ceil",
+                "ceiling",
+                "excel",
+                "floor",
+                "math",
+                "mround",
+                "numbers",
+                "round",
+                "rounding"
+            ],
+            "time": "2019-04-19T18:46:57+00:00"
         },
         {
             "name": "psr/container",
@@ -2401,7 +2456,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.0"
+        "php": "^7.1"
     },
     "platform-dev": []
 }
