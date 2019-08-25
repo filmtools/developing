@@ -3,6 +3,10 @@ namespace FilmTools\Developing;
 
 use FilmTools\Commons\Zones;
 use FilmTools\Commons\FStops;
+use FilmTools\Commons\Exposures;
+use FilmTools\Commons\ExposuresProviderInterface;
+use FilmTools\Commons\Densities;
+use FilmTools\Commons\DensitiesProviderInterface;
 
 class DevelopingFactory
 {
@@ -47,26 +51,43 @@ class DevelopingFactory
         if (!is_array($developing) and !$developing instanceOf \ArrayAccess)
             throw new DevelopingInvalidArgumentException("Array or ArrayAccess expected");
 
-        $densities = $developing['densities'] ?? array();
-        $fstops    = $developing['fstops']    ?? array();
-        $zones     = $developing['zones']     ?? array();
-        $exposures = $developing['exposures'] ?? array();
-
+        $densities = $this->extractDensities($developing);
+        $exposures = $this->extractExposures($developing);
         $time      = $this->extractTime($developing);
-
-        if (empty($exposures) and !empty($zones)):
-            $exposures = new Zones( $zones );
-        endif;
-
-        if (empty($exposures) and !empty($fstops)):
-            $exposures = new FStops( $fstops );
-        endif;
 
         $developing_php_class = $this->developing_php_class;
         return new $developing_php_class( $exposures, $densities, $time );
     }
 
-    protected function extractTime( $developing )
+
+    protected function extractDensities( $developing ) : DensitiesProviderInterface
+    {
+        $densities = $developing['densities'] ?? array();
+
+        return new Densities($densities);
+    }
+
+
+    protected function extractExposures( $developing ) : ExposuresProviderInterface
+    {
+        $fstops    = $developing['fstops']    ?? array();
+        $zones     = $developing['zones']     ?? array();
+        $exposures = $developing['exposures'] ?? array();
+
+
+        if (empty($exposures) and !empty($zones)):
+            $exposures = new Zones( $zones );
+        elseif (empty($exposures) and !empty($fstops)):
+            $exposures = new FStops( $fstops );
+        else:
+            $exposures = new Exposures( $exposures );
+        endif;
+
+        return $exposures;
+    }
+
+
+    protected function extractTime( $developing ) : int
     {
         if (!array_key_exists("time", $developing)
         and !array_key_exists("seconds", $developing))
