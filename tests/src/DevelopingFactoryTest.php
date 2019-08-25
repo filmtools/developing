@@ -72,11 +72,14 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider provideInvalidFactoryArguments
      */
-    public function testInvalidFactoryArguments( $data )
+    public function testInvalidFactoryArguments( $data, $exception_class = null )
     {
         $sut = new DevelopingFactory;
         $this->expectException( DevelopingExceptionInterface::class );
-        $this->expectException( NoTimeGivenException::class );
+
+        if ($exception_class)
+            $this->expectException( $exception_class );
+
         $sut( $data );
     }
 
@@ -84,11 +87,12 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
     public function provideInvalidFactoryArguments()
     {
         return array(
+            [ "some_string", DevelopingInvalidArgumentException::class ],
             [[
                 'densities' => array(),
                 'exposures' => array(),
                 'zones' => array(),
-            ]],
+            ],  NoTimeGivenException::class],
             [[
                 'time' => '',
                 'densities' => array( 1, 2, 3),

@@ -39,11 +39,14 @@ class DevelopingFactory
      * If no "exposures" are given, but "zones" numbers are instead, the zone numbers
      * will be converted internally.
      *
-     * @param  array $developing
+     * @param  array|ArrayAccess $developing
      * @return DevelopingInterface
      */
     public function __invoke( $developing )
     {
+        if (!is_array($developing) and !$developing instanceOf \ArrayAccess)
+            throw new DevelopingInvalidArgumentException("Array or ArrayAccess expected");
+
         $densities = $developing['densities'] ?? array();
         $fstops    = $developing['fstops']     ?? array();
         $zones     = $developing['zones']     ?? array();
