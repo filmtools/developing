@@ -51,13 +51,8 @@ class DevelopingFactory
         $fstops    = $developing['fstops']    ?? array();
         $zones     = $developing['zones']     ?? array();
         $exposures = $developing['exposures'] ?? array();
-        $time      = $developing['time']      ?? false;
 
-        if (!array_key_exists("time", $developing))
-            throw new NoTimeGivenException("The data array must contain a 'time' element.");
-
-        if (filter_var($time, \FILTER_VALIDATE_INT, ['options' => array( 'min_range' => 0 )]) === false)
-            throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
+        $time      = $this->extractTime($developing);
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
@@ -69,5 +64,19 @@ class DevelopingFactory
 
         $developing_php_class = $this->developing_php_class;
         return new $developing_php_class( $exposures, $densities, $time );
+    }
+
+    protected function extractTime( $developing )
+    {
+        if (!array_key_exists("time", $developing)
+        and !array_key_exists("seconds", $developing))
+            throw new NoTimeGivenException("The data array must contain either 'time' or 'seconds' element.");
+
+        $time = $developing['seconds'] ?? ($developing['time'] ?? false);
+
+        if (filter_var($time, \FILTER_VALIDATE_INT, ['options' => array( 'min_range' => 0 )]) === false)
+            throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
+
+        return $time;
     }
 }
