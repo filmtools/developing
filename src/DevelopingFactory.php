@@ -3,6 +3,10 @@ namespace FilmTools\Developing;
 
 use FilmTools\Commons\Zones;
 use FilmTools\Commons\FStops;
+use FilmTools\Commons\Exposures;
+use FilmTools\Commons\ExposuresProviderInterface;
+use FilmTools\Commons\Densities;
+use FilmTools\Commons\DensitiesProviderInterface;
 
 class DevelopingFactory
 {
@@ -34,39 +38,66 @@ class DevelopingFactory
     /**
      * The factory method.
      *
-     * Expects an array with at least elements "time", "densities", and "exposures".
+     * Expects an array or ArrayAccess with at least elements "time", "densities", and "exposures".
      *
      * If no "exposures" are given, but "zones" numbers are instead, the zone numbers
      * will be converted internally.
      *
-     * @param  array $developing
+     * @param  array|ArrayAccess $developing
      * @return DevelopingInterface
      */
     public function __invoke( $developing )
     {
-        $densities = $developing['densities'] ?? array();
-        $fstops    = $developing['fstops']     ?? array();
-        $zones     = $developing['zones']     ?? array();
-        $exposures = $developing['exposures'] ?? array();
+        if (!is_array($developing) and !$developing instanceOf \ArrayAccess)
+            throw new DevelopingInvalidArgumentException("Array or ArrayAccess expected");
 
-        if (!array_key_exists("time", $developing))
-            throw new NoTimeGivenException("The data array must contain a 'time' element.");
-
-        $time = $developing['time'] ?? false;
-        if (filter_var($time, \FILTER_VALIDATE_INT, [
-            'options' => array( 'min_range' => 0 )
-        ]) === false)
-            throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
-
-        if (empty($exposures) and !empty($zones)):
-            $exposures = new Zones( $zones );
-        endif;
-
-        if (empty($exposures) and !empty($fstops)):
-            $exposures = new FStops( $fstops );
-        endif;
+        $densities = $this->extractDensities($developing);
+        $exposures = $this->extractExposures($developing);
+        $time      = $this->extractTime($developing);
 
         $developing_php_class = $this->developing_php_class;
         return new $developing_php_class( $exposures, $densities, $time );
+    }
+
+
+    protected function extractDensities( $developing ) : DensitiesProviderInterface
+    {
+        $densities = $developing['densities'] ?? array();
+
+        return new Densities($densities);
+    }
+
+
+    protected function extractExposures( $developing ) : ExposuresProviderInterface
+    {
+        $fstops    = $developing['fstops']    ?? array();
+        $zones     = $developing['zones']     ?? array();
+        $exposures = $developing['exposures'] ?? array();
+
+
+        if (empty($exposures) and !empty($zones)):
+            $exposures = new Zones( $zones );
+        elseif (empty($exposures) and !empty($fstops)):
+            $exposures = new FStops( $fstops );
+        else:
+            $exposures = new Exposures( $exposures );
+        endif;
+
+        return $exposures;
+    }
+
+
+    protected function extractTime( $developing ) : int
+    {
+        if (!array_key_exists("time", $developing)
+        and !array_key_exists("seconds", $developing))
+            throw new NoTimeGivenException("The data array must contain either 'time' or 'seconds' element.");
+
+        $time = $developing['seconds'] ?? ($developing['time'] ?? false);
+
+        if (filter_var($time, \FILTER_VALIDATE_INT, ['options' => array( 'min_range' => 0 )]) === false)
+            throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
+
+        return $time;
     }
 }
