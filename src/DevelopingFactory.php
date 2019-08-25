@@ -48,17 +48,15 @@ class DevelopingFactory
             throw new DevelopingInvalidArgumentException("Array or ArrayAccess expected");
 
         $densities = $developing['densities'] ?? array();
-        $fstops    = $developing['fstops']     ?? array();
+        $fstops    = $developing['fstops']    ?? array();
         $zones     = $developing['zones']     ?? array();
         $exposures = $developing['exposures'] ?? array();
+        $time      = $developing['time']      ?? false;
 
         if (!array_key_exists("time", $developing))
             throw new NoTimeGivenException("The data array must contain a 'time' element.");
 
-        $time = $developing['time'] ?? false;
-        if (filter_var($time, \FILTER_VALIDATE_INT, [
-            'options' => array( 'min_range' => 0 )
-        ]) === false)
+        if (filter_var($time, \FILTER_VALIDATE_INT, ['options' => array( 'min_range' => 0 )]) === false)
             throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
 
         if (empty($exposures) and !empty($zones)):
