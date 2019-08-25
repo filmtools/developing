@@ -46,7 +46,7 @@ class DevelopingFactory
      * @param  array|ArrayAccess $developing
      * @return DevelopingInterface
      */
-    public function __invoke( $developing )
+    public function __invoke( $developing ) : DevelopingInterface
     {
         if (!is_array($developing) and !$developing instanceOf \ArrayAccess)
             throw new DevelopingInvalidArgumentException("Array or ArrayAccess expected");
