@@ -34,7 +34,7 @@ class DevelopingFactory
     /**
      * The factory method.
      *
-     * Expects an array with at least elements "time", "densities", and "exposures".
+     * Expects an array or ArrayAccess with at least elements "time", "densities", and "exposures".
      *
      * If no "exposures" are given, but "zones" numbers are instead, the zone numbers
      * will be converted internally.
