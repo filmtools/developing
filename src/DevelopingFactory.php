@@ -62,7 +62,10 @@ class DevelopingFactory
 
     protected function extractDensities( $developing ) : DensitiesProviderInterface
     {
-        $densities = $developing['densities'] ?? array();
+
+        if (empty($densities = $developing['logD'] ?? array())):
+            $densities = $developing['densities'] ?? array();
+        endif;
 
         return new Densities($densities);
     }
@@ -72,8 +75,10 @@ class DevelopingFactory
     {
         $fstops    = $developing['fstops']    ?? array();
         $zones     = $developing['zones']     ?? array();
-        $exposures = $developing['exposures'] ?? array();
 
+        if (empty($exposures = $developing['logH'] ?? array())):
+            $exposures = $developing['exposures'] ?? array();
+        endif;
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
