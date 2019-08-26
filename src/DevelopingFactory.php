@@ -95,6 +95,17 @@ class DevelopingFactory
 
         $time = $developing['seconds'] ?? ($developing['time'] ?? false);
 
+        // Remove surfluous time values
+        if (is_array($time)):
+            $time = array_unique($time);
+            $count_times = count($time);
+            if ($count_times > 1):
+                $msg = sprintf("There must only be one developing time, %s given", $count_times);
+                throw new NoTimeGivenException($msg);
+            endif;
+            $time = array_shift($time);
+        endif;
+
         if (filter_var($time, \FILTER_VALIDATE_INT, ['options' => array( 'min_range' => 0 )]) === false)
             throw new NoTimeGivenException("The developing time must be integer (positive or 0).");
 
