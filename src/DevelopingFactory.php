@@ -93,7 +93,10 @@ class DevelopingFactory
         and !array_key_exists("seconds", $developing))
             throw new NoTimeGivenException("The data array must contain either 'time' or 'seconds' element.");
 
-        $time = $developing['seconds'] ?? ($developing['time'] ?? false);
+        if (empty($time = $developing['seconds'] ?? false)
+        and empty($time = $developing['time'] ?? false)):
+            throw new NoTimeGivenException("At least one element in 'seconds' or 'time' expected");
+        endif;
 
         // Remove surfluous time values
         if (is_array($time)):
