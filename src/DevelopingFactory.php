@@ -18,12 +18,20 @@ class DevelopingFactory
      */
     public $developing_php_class;
 
+
     /**
+     * Field names that may contain density values.
+     * (Sort order from "most" to "least" specific)
+     *
      * @var array
      */
     public $density_fields = array("logD", "density", "densities");
 
+
     /**
+     * Field names that may contain exposures values.
+     * (Sort order from "most" to "least" specific)
+     *
      * @var array
      */
     public $exposure_fields = array("logH", "exposure", "exposures");
