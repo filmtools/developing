@@ -20,6 +20,24 @@ class DevelopingFactory
 
 
     /**
+     * Field names that may contain density values.
+     * (Sort order from "most" to "least" specific)
+     *
+     * @var array
+     */
+    public $density_fields = array("logD", "density", "densities");
+
+
+    /**
+     * Field names that may contain exposures values.
+     * (Sort order from "most" to "least" specific)
+     *
+     * @var array
+     */
+    public $exposure_fields = array("logH", "exposure", "exposures");
+
+
+    /**
      * @param string|null $developing_php_class DevelopingInterface instance FQDN
      *
      * @throws InvalidArgumentException If FQDN does not implement DevelopingInterface
@@ -62,10 +80,12 @@ class DevelopingFactory
 
     protected function extractDensities( $developing ) : DensitiesProviderInterface
     {
+        $density_fields = $this->density_fields;
+        $densities = array();
 
-        if (empty($densities = $developing['logD'] ?? array())):
-            $densities = $developing['densities'] ?? array();
-        endif;
+        while (($field = array_shift($density_fields)) and empty($densities)):
+            $densities = $developing[ $field ] ?? array();
+        endwhile;
 
         return new Densities($densities);
     }
@@ -73,19 +93,30 @@ class DevelopingFactory
 
     protected function extractExposures( $developing ) : ExposuresProviderInterface
     {
-        $fstops    = $developing['fstops']    ?? array();
-        $zones     = $developing['zones']     ?? array();
 
-        if (empty($exposures = $developing['logH'] ?? array())):
-            $exposures = $developing['exposures'] ?? array();
+        $exposure_fields = $this->exposure_fields;
+        $exposures = array();
+
+        while (($field = array_shift($exposure_fields)) and empty($exposures)):
+            $exposures = $developing[ $field ] ?? array();
+        endwhile;
+
+        if (!empty($exposures)):
+            return new Exposures( $exposures );
         endif;
+
+        // So if "exposures" are empty, try to make some
+        // using fstops and zone numbers
+        $fstops = ($developing['fstop'] ?? array()) ?: $developing['fstops'] ?? array();
+        $zones  = ($developing['zone']  ?? array()) ?: $developing['zones']  ?? array();
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
         elseif (empty($exposures) and !empty($fstops)):
             $exposures = new FStops( $fstops );
         else:
-            $exposures = new Exposures( $exposures );
+            // Found nothing, give up
+            $exposures = new Exposures( array() );
         endif;
 
         return $exposures;
