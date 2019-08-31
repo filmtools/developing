@@ -37,7 +37,7 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
         return array(
             [[
                 'time' => 99,
-                'densities' => array(),
+                'density' => array(),
                 'exposures' => array(),
                 'zones' => array(),
             ]],
@@ -61,6 +61,11 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
                 'time' => ['99', 99, '99'],
                 'densities' => array( 1, 2, 3),
                 'fstops' => array( -5, 0, 1),
+            ]],
+            [[
+                'time' => ['99', 99, '99'],
+                'densities' => array( 1, 2, 3),
+                'exposure' => array( -5, 0, 1),
             ]],
             [[
                 'time' => 1,
