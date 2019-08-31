@@ -54,6 +54,12 @@ class DevelopingFactoryTest extends \PHPUnit\Framework\TestCase
             ]],
             [[
                 'time' => 99,
+                'logD' => array( 1, 2, 3),
+                'zone' => array( 1, 2, 3),
+                'zones' => array( -2),
+            ]],
+            [[
+                'time' => 99,
                 'density' => array( 1, 2, 3),
                 'zones' => array( 1, 2, 3),
             ]],

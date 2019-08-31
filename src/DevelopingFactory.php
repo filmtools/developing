@@ -107,8 +107,8 @@ class DevelopingFactory
 
         // So if "exposures" are empty, try to make some
         // using fstops and zone numbers
-        $fstops = $developing['fstops']    ?? array();
-        $zones  = $developing['zones']     ?? array();
+        $fstops = ($developing['fstop'] ?? array()) ?: $developing['fstops'] ?? array();
+        $zones  = ($developing['zone']  ?? array()) ?: $developing['zones']  ?? array();
 
         if (empty($exposures) and !empty($zones)):
             $exposures = new Zones( $zones );
