@@ -62,10 +62,12 @@ class DevelopingFactory
 
     protected function extractDensities( $developing ) : DensitiesProviderInterface
     {
+        $fields = array("logD", "density", "densities");
+        $densities = array();
 
-        if (empty($densities = $developing['logD'] ?? array())):
-            $densities = $developing['densities'] ?? array();
-        endif;
+        while (($f = array_shift($fields)) and empty($densities)):
+            $densities = $developing[ $f ] ?? array();
+        endwhile;
 
         return new Densities($densities);
     }
