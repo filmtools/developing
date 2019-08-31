@@ -18,6 +18,16 @@ class DevelopingFactory
      */
     public $developing_php_class;
 
+    /**
+     * @var array
+     */
+    public $density_fields = array("logD", "density", "densities");
+
+    /**
+     * @var array
+     */
+    public $exposure_fields = array("logH", "exposure", "exposures");
+
 
     /**
      * @param string|null $developing_php_class DevelopingInterface instance FQDN
@@ -62,11 +72,11 @@ class DevelopingFactory
 
     protected function extractDensities( $developing ) : DensitiesProviderInterface
     {
-        $fields = array("logD", "density", "densities");
+        $density_fields = $this->density_fields;
         $densities = array();
 
-        while (($f = array_shift($fields)) and empty($densities)):
-            $densities = $developing[ $f ] ?? array();
+        while (($field = array_shift($density_fields)) and empty($densities)):
+            $densities = $developing[ $field ] ?? array();
         endwhile;
 
         return new Densities($densities);
