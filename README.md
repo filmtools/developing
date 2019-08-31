@@ -121,18 +121,35 @@ $developing = $developing_factory([
 In case that you're not dealing with exposure values but *zone numbers* or *f-stops* rather, pass these instead. They will be converted to exposure values internally:
 
 ```php
+$time = 600;
+$densities = [ 0, 0.1, 0.4, 0.6 ];
+
 $developing = $developing_factory([
-	'time' => 600,
-	'zones' => [ 0, 1, 2, 3 ],
-	'densities' => [ 0, 0.1, 0.4, 0.6 ],
+	'time'      => $time,
+	'densities' => $densities,
+	'zones'     => [ 0, 1, 2, 3 ],  
 ]);
 
 $developing = $developing_factory([
-	'time' => 600,
-	'fstops' => [ -5, -4, 0, 1, 3 ],
-	'densities' => [ 0, 0.1, 0.4, 0.6, 0.8 ]
+	'time'      => $time,
+	'densities' => $densities,
+	'fstops'    => [ -5, -4, 0, 1, 3 ]
 ]);
 ```
+
+### About field names
+
+Allowed field names for **Density** values are `logD`, `density`, and `densities`.
+
+Allowed field names for **Exposure** values are `logH`, `exposure`, and `exposures`.
+
+Allowed field names for **fstops** values are `fstop` and `fstops`.
+
+Allowed field names for **zone numbers** values are `zone` and `zones`.
+
+Allowed field names for **time** values are `seconds` and `time`.
+
+*The most specific column will be used.*
 
 
 
